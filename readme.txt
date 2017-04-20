@@ -18,6 +18,5 @@
         cn.crm.web.controller
         cn.crm.utils
 
-        在webRoot下创建manger.jsp作为首页，分帧
+        在webRoot下创建index.jsp作为首页
         在webRoot下创建manger文件夹保存后台jsp
-        在webROot下创建client文件夹保存前台jsp
