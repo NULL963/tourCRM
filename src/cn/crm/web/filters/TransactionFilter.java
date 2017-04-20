@@ -18,8 +18,8 @@ public class TransactionFilter implements Filter {
         chain.doFilter(req, resp);
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
+        chain.doFilter(request, response);
         try {
-            chain.doFilter(request, response);
             //获取当前线程上的链接 提交事务关闭链接 释放链接与当前线程的绑定
             jdbcUtils.CommitTransaction();
         } finally {

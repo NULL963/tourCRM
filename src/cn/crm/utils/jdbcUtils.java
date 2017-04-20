@@ -22,6 +22,9 @@ public class jdbcUtils {
         this.dataSource = dataSource;
     }
 
+    public static DataSource getDataSoruce(){
+        return dataSource;
+    }
     public static Connection getConnection() {
         Connection conn = tl.get();
         if (conn == null) {

@@ -218,3 +218,39 @@ CREATE TABLE mid_product_food (
   CONSTRAINT mid7_food_FK FOREIGN KEY (food_id) REFERENCES foods(id)
 );
 
+CREATE TABLE mid_user_employee (
+  id CHAR (32) PRIMARY KEY ,
+  user_id CHAR (32),
+  employee_id CHAR (32),
+  CONSTRAINT mid8_user_FK FOREIGN KEY (user_id) REFERENCES users(id),
+  CONSTRAINT mid8_employee_FK FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+//从pub_menu 取数据
+SELECT child.id, child.text,child.uri,child.lft,child.rht, count(child.text) as depth from pub_menu as parent,pub_menu as child where parent.lft<child.lft and parent.rht>child.rht group by(child.text) order by child.lft;
+delete from pub_menu;
+insert into pub_menu values('1','crm',null,1,50);
+insert into pub_menu values('1001','系统管理',null,2,11);
+insert into pub_menu values('100101','员工管理',null,3,4);
+insert into pub_menu values('100102','角色管理',null,5,6);
+insert into pub_menu values('100103','用户管理',null,7,8);
+insert into pub_menu values('100104','部门管理',null,9,10);
+insert into pub_menu values('1002','客户管理',null,12,17);
+insert into pub_menu values('100201','客户信息',null,13,14);
+insert into pub_menu values('100202','供应信息',null,15,16);
+insert into pub_menu values('1003','销售管理',null,18,25);
+insert into pub_menu values('100301','销售报价',null,19,20);
+insert into pub_menu values('100302','订单管理',null,21,22);
+insert into pub_menu values('100303','旅行团管理',null,23,24);
+insert into pub_menu values('1004','售后管理',null,26,31);
+insert into pub_menu values('100401','活动总结',null,27,28);
+insert into pub_menu values('100202','投诉建议',null,29,30);
+insert into pub_menu values('1005','基础资料',null,32,43);
+insert into pub_menu values('100501','产品信息',null,33,34);
+insert into pub_menu values('100502','车辆信息',null,35,36);
+insert into pub_menu values('100503','住宿信息',null,37,38);
+insert into pub_menu values('100504','餐饮信息',null,39,40);
+insert into pub_menu values('100505','景点信息',null,41,42);
+insert into pub_menu values('1006','统计管理',null,44,49);
+insert into pub_menu values('100601','月活动报表',null,45,46);
+insert into pub_menu values('100602','销售台账',null,47,48);

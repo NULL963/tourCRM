@@ -1,0 +1,24 @@
+li {
+    list-style-type: none;
+}
+main {
+    min-height: 100%;
+    height: auto !important;
+    margin: 0px;
+}
+
+.smartbar {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: "»ªÎÄÐÂÎº";
+    width: 10000px;
+    height: auto;
+    padding: 20px 20px 20px 40px;
+    text-indent: 1em;
+    float: left;
+}
+
+.smartbar li {
+    float: left;
+
+}

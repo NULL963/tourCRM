@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1">
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
-    </context-param>
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1"
+         metadata-complete="true">
+    <!--如果在使用springMVC的情况下是不用配置spring的-->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -17,7 +13,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>*.form</url-pattern>
+        <url-pattern>*.action</url-pattern>
     </servlet-mapping>
 
     <!-- 连接池 启用 Web 监控统计功能    start-->
@@ -26,7 +22,7 @@
         <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
         <init-param>
             <param-name>exclusions</param-name>
-            <param-value>*. js ,*. gif ,*. jpg ,*. png ,*. css ,*. ico ,/ druid /*</param-value>
+            <param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -42,22 +38,33 @@
         <url-pattern>/druid/*</url-pattern>
     </servlet-mapping>
     <!-- 连接池 启用 Web 监控统计功能    end-->
-    <!--配置ilter-->
+    <!--配置filter-->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>
-        <filter-class>cn.crm.web.filters.CharacterEncodingFilter</filter-class>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
     </filter>
-    <filter>
-        <filter-name>TransactionFilter</filter-name>
-        <filter-class>cn.crm.web.filters.TransactionFilter</filter-class>
-    </filter>
+    <!--<filter>-->
+        <!--<filter-name>TransactionFilter</filter-name>-->
+        <!--<filter-class>cn.crm.web.filters.TransactionFilter</filter-class>-->
+    <!--</filter>-->
     <filter-mapping>
         <filter-name>CharacterEncodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>*.action</url-pattern>
     </filter-mapping>
-    <filter-mapping>
-        <filter-name>TransactionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    <!--<filter-mapping>-->
+        <!--<filter-name>TransactionFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
     <!--配置filter结束-->
+    <welcome-file-list>
+        <welcome-file>/manger/login.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
