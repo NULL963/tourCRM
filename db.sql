@@ -8,7 +8,7 @@ CREATE TABLE pub_menu
   lft int,
   rht int
 );
-CREATE TABLE department (
+CREATE TABLE departments (
   id CHAR(32) PRIMARY KEY ,
   name VARCHAR(20) NOT NULL,
   gmt_create DATETIME ,
@@ -100,6 +100,8 @@ CREATE TABLE products (
   money DECIMAL(8,2) ,
   number VARCHAR (20),
   name VARCHAR (30),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   description VARCHAR (60)
 );
 CREATE TABLE groups (
@@ -108,6 +110,8 @@ CREATE TABLE groups (
   tour_guide_id CHAR (32),
   driver_id CHAR (32),
   product_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT group_employee_FK FOREIGN KEY (tour_guide_id) REFERENCES employees(id),
   CONSTRAINT group_driver_FK FOREIGN KEY (driver_id) REFERENCES employees(id),
   CONSTRAINT group_product_FK FOREIGN KEY (product_id) REFERENCES products(id)
@@ -127,6 +131,8 @@ CREATE TABLE orders (
   customer_id CHAR (32),
   product_id CHAR (32),
   group_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT order_employee_FK FOREIGN KEY (employee_id) REFERENCES employees(id),
   CONSTRAINT order_customer_FK FOREIGN KEY (customer_id) REFERENCES customers(id),
   CONSTRAINT order_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
@@ -139,6 +145,8 @@ CREATE TABLE suppliers (
   address VARCHAR (40),
   bank_card_number VARCHAR (25),
   bank_of_deposit VARCHAR (60),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   email VARCHAR(20),
   phone VARCHAR(20)
 );
@@ -149,6 +157,8 @@ CREATE TABLE accomodations (
   address VARCHAR (40),
   rome_type VARCHAR (20),
   supplier_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT accomodation_supplier_FK FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
 );
 CREATE TABLE vehicles (
@@ -161,6 +171,8 @@ CREATE TABLE vehicles (
   is_usable CHAR (1),
   number VARCHAR (20),
   supplier_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT vehicle_supplier_FK FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
 );
 CREATE TABLE scenic_spots (
@@ -168,6 +180,8 @@ CREATE TABLE scenic_spots (
   name VARCHAR (20),
   level char(1),
   price DECIMAL(8,2) ,
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   adderss VARCHAR (40)
 );
 CREATE TABLE foods (
@@ -176,6 +190,8 @@ CREATE TABLE foods (
   price DECIMAL(8,2) ,
   address VARCHAR (40),
   supplier_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT food_supplier_FK FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
 );
 
@@ -183,6 +199,8 @@ CREATE TABLE mid_product_order (
   id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   order_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT mid3_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid3_order_FK FOREIGN KEY (order_id) REFERENCES orders(id)
 );
@@ -193,6 +211,8 @@ CREATE TABLE mid_product_accomodation (
   id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   accomodation_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT mid4_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid4_accomodation_FK FOREIGN KEY (accomodation_id) REFERENCES accomodations(id)
 );
@@ -200,6 +220,8 @@ CREATE TABLE mid_product_vehicle (
   id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   vehicle_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT mid5_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid5_vehicle_FK FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
 );
@@ -207,6 +229,8 @@ CREATE TABLE mid_product_spot (
   id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   spot_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT mid6_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid6_spot_FK FOREIGN KEY (spot_id) REFERENCES scenic_spots(id)
 );
@@ -214,6 +238,8 @@ CREATE TABLE mid_product_food (
   id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   food_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT mid7_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid7_food_FK FOREIGN KEY (food_id) REFERENCES foods(id)
 );
@@ -222,6 +248,8 @@ CREATE TABLE mid_user_employee (
   id CHAR (32) PRIMARY KEY ,
   user_id CHAR (32),
   employee_id CHAR (32),
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
   CONSTRAINT mid8_user_FK FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT mid8_employee_FK FOREIGN KEY (employee_id) REFERENCES employees(id)
 );

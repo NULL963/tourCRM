@@ -1,5 +1,6 @@
 package cn.crm.dao.impl;
 
+import cn.crm.dao.MenuDao;
 import cn.crm.domain.Pub_menu;
 import cn.crm.utils.jdbcUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -7,14 +8,13 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by LEMON on 2017/4/18. ≤È’“
  */
 @Repository
-public class menuDaoImpl implements cn.crm.dao.menuDao {
+public class MenuDaoImpl implements MenuDao {
     @Override
     public List getAllMenu() throws SQLException {
         QueryRunner runner = new QueryRunner(jdbcUtils.getDataSoruce());

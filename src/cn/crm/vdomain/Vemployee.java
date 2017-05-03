@@ -1,52 +1,30 @@
-package cn.crm.domain;
+package cn.crm.vdomain;
 
 import java.util.Date;
 
 /**
- * Created by LEMON on 2017/4/16.
+ * Created by LEMON on 2017/4/30.
  */
-public class Employee {
+public class Vemployee {
     private String id;
     private String name;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     private String gender;
     private String email;
     private String phone;
     private String qq;
-    private Date hireDate;
-    private Department department;
-    private String department_id;
+    private String hiredate;
     private int salary;
     private String job;
-    private Date gmt_modifed;
-
-    private Date gmt_create;
-
-    public Date getGmt_modifed() {
-        return gmt_modifed;
-    }
-
-    public void setGmt_modifed(Date gmt_modifed) {
-        this.gmt_modifed = gmt_modifed;
-    }
-
-    public Date getGmt_create() {
-        return gmt_create;
-    }
-
-    public void setGmt_create(Date gmt_create) {
-        this.gmt_create = gmt_create;
-    }
-
-    public String getDepartment_id() {
-        return department_id;
-    }
-
-    public void setDepartment_id(String department_id) {
-        this.department_id = department_id;
-    }
-
-    public Employee() {
-    }
+    private String department;
 
     public String getId() {
         return id;
@@ -64,13 +42,9 @@ public class Employee {
         this.name = name;
     }
 
-    public String getGender() {
-        return gender;
-    }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+
+
 
     public String getEmail() {
         return email;
@@ -96,12 +70,12 @@ public class Employee {
         this.qq = qq;
     }
 
-    public Date getHireDate() {
-        return hireDate;
+    public String getHiredate() {
+        return hiredate;
     }
 
-    public void setHireDate(Date hireDate) {
-        this.hireDate = hireDate;
+    public void setHiredate(String hiredate) {
+        this.hiredate = hiredate;
     }
 
     public int getSalary() {
@@ -120,11 +94,11 @@ public class Employee {
         this.job = job;
     }
 
-    public Department getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(String department) {
         this.department = department;
     }
 }

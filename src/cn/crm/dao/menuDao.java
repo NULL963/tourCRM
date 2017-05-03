@@ -6,6 +6,6 @@ import java.util.List;
 /**
  * Created by LEMON on 2017/4/18.
  */
-public interface menuDao {
+public interface MenuDao {
     List getAllMenu() throws SQLException;
 }

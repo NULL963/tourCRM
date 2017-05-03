@@ -1,15 +1,12 @@
 package cn.crm.web.controller;
 
-import cn.crm.dao.userDao;
 import cn.crm.domain.User;
-import cn.crm.service.impl.loginServiceImpl;
-import org.springframework.web.bind.annotation.ResponseBody;
+import cn.crm.service.impl.LoginServiceImpl;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -17,30 +14,36 @@ import java.util.Map;
  */
 
 @Controller
-public class businessHandler {
+public class BusinessHandler {
 
-    private loginServiceImpl service;
+    private LoginServiceImpl service;
 
     @Autowired
-    public void setService(loginServiceImpl service) {
+    public void setService(LoginServiceImpl service) {
         this.service = service;
     }
 
-    private userDao userDao;
-    @Autowired
-    public void setUserDao(userDao userDao) {
-        this.userDao = userDao;
-    }
-
-    @RequestMapping("/login.action")
-    public ModelAndView login(User user){
+    @RequestMapping("/menu.action")
+    public ModelAndView getMenu(){
         ModelAndView modelAndView = new ModelAndView();
 
-        Map map = service.login(user);
+        Map map = service.getMenu();
         if (map != null) {
             modelAndView.addObject("user", map.get("user"));
             modelAndView.addObject("firstList", map.get("firstlist"));
             modelAndView.addObject("menuMap", map.get("menuMap"));
+            modelAndView.setViewName("/manger/top.jsp");
+        } else {
+            modelAndView.addObject("message", "没有得到menu");
+            modelAndView.setViewName("/manger/message.jsp");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping("/login.action")
+    public ModelAndView loginAfter(User user){
+        ModelAndView modelAndView = new ModelAndView();
+        if (service.login(user)) {
             modelAndView.setViewName("/index.jsp");
         } else {
             modelAndView.addObject("message", "出错啦");
@@ -48,9 +51,11 @@ public class businessHandler {
         }
         return modelAndView;
     }
+//    @RequestMapping("/employee.action")
+//    public ModelAndView employee() {
+//        ModelAndView modelAndView = new ModelAndView();
+//
+//        return modelAndView;
+//    }
 
-    @RequestMapping("/employee.action")
-    public @ResponseBody User testAjax() throws SQLException {
-        return userDao.getUserById("1");
-    }
 }

@@ -9,13 +9,29 @@ public class User {
     private String id;
     private String name;
     private String password;
+    private String description;
+
     private Date gmt_modifed;
+
     private Date gmt_create;
     private Employee  employee;
-    private String desc;
+    private String employee_id;
 
-    public String getDesc() {
-        return desc;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getEmployee_id() {
+        return employee_id;
+    }
+
+    public void setEmployee_id(String employee_id) {
+        this.employee_id = employee_id;
     }
 
     public Employee getEmployee() {
@@ -24,10 +40,6 @@ public class User {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
     }
 
     public String getId() {

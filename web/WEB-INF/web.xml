@@ -6,6 +6,24 @@
          version="3.1"
          metadata-complete="true">
     <!--如果在使用springMVC的情况下是不用配置spring的-->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -13,6 +31,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
+        <!--RESTful风格-->
         <url-pattern>*.action</url-pattern>
     </servlet-mapping>
 
@@ -39,26 +58,12 @@
     </servlet-mapping>
     <!-- 连接池 启用 Web 监控统计功能    end-->
     <!--配置filter-->
-    <filter>
-        <filter-name>CharacterEncodingFilter</filter-name>
-        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-        <init-param>
-            <param-name>encoding</param-name>
-            <param-value>utf-8</param-value>
-        </init-param>
-        <init-param>
-            <param-name>forceEncoding</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
+
     <!--<filter>-->
         <!--<filter-name>TransactionFilter</filter-name>-->
         <!--<filter-class>cn.crm.web.filters.TransactionFilter</filter-class>-->
     <!--</filter>-->
-    <filter-mapping>
-        <filter-name>CharacterEncodingFilter</filter-name>
-        <url-pattern>*.action</url-pattern>
-    </filter-mapping>
+
     <!--<filter-mapping>-->
         <!--<filter-name>TransactionFilter</filter-name>-->
         <!--<url-pattern>/*</url-pattern>-->

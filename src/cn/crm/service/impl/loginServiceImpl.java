@@ -1,11 +1,12 @@
 package cn.crm.service.impl;
 
-import cn.crm.dao.menuDao;
-import cn.crm.dao.userDao;
+import cn.crm.dao.MenuDao;
+import cn.crm.dao.UserDao;
+import cn.crm.dao.impl.MenuDaoImpl;
+import cn.crm.dao.impl.UserDaoImpl;
 import cn.crm.domain.Pub_menu;
 import cn.crm.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -18,54 +19,57 @@ import java.util.Map;
  * Created by LEMON on 2017/4/16.
  */
 @Service
-public class loginServiceImpl {
-    private userDao userDao;
+public class LoginServiceImpl {
+    private UserDao userDao;
 
 
-    private menuDao menuDao;
+    private MenuDao menuDao;
+
     @Autowired
-    public void setMenuDao(cn.crm.dao.menuDao menuDao) {
+    public void setMenuDao(MenuDao menuDao) {
         this.menuDao = menuDao;
     }
 
     @Autowired
-    public void setUserDao(cn.crm.dao.userDao userDao) {
+    public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    public Map<String, Object> login(User user) {
+    public boolean login(User user) {
+        User myUser = userDao.getUserByName(user.getName());
+        if (myUser != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public Map<String, Object> getMenu() {
         List<Pub_menu> firstMenu = new ArrayList<Pub_menu>();
         List<Pub_menu> secondMenu = null;
         Map<String, List<Pub_menu>> menuMap = new HashMap<String, List<Pub_menu>>();
-        Map<String,Object> map = new HashMap<String, Object>();
-        User getUser = null;
+        Map<String, Object> map = new HashMap<String, Object>();
         String name = "";
+
         try {
-            getUser = userDao.getUserByName(user.getName());
-            if (user.getPassword().equals(getUser.getPassword())) {
-                map.put("user", user);
-                List<Pub_menu> list = menuDao.getAllMenu();
-                for (Pub_menu menu : list) {
-                    if (menu.getDepth() == 1) {
-                        firstMenu.add(menu);
-                        name = menu.getText();
-                        secondMenu = new ArrayList<Pub_menu>();
-                        menuMap.put(name, secondMenu);
-                    } else {
-                        secondMenu = menuMap.get(name);
-                        secondMenu.add(menu);
-                        map.put(name, secondMenu);
-                    }
-                    map.put("firstlist", firstMenu);
-                    map.put("menuMap", menuMap);
+            List<Pub_menu> list = menuDao.getAllMenu();
+            for (Pub_menu menu : list) {
+                if (menu.getDepth() == 1) {
+                    firstMenu.add(menu);
+                    name = menu.getText();
+                    secondMenu = new ArrayList<Pub_menu>();
+                    menuMap.put(name, secondMenu);
+                } else {
+                    secondMenu = menuMap.get(name);
+                    secondMenu.add(menu);
+                    map.put(name, secondMenu);
                 }
-                return map;
+                map.put("firstlist", firstMenu);
+                map.put("menuMap", menuMap);
             }
+            return map;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return null;
     }
 
 
