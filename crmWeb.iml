@@ -125,6 +125,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="jackson-core-asl-1.9.11" level="project" />
+    <orderEntry type="library" name="jackson-annotations-2.6.7" level="project" />
   </component>
 </module>

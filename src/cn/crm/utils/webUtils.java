@@ -1,6 +1,9 @@
 package cn.crm.utils;
 
+import cn.crm.enums.AccommodationLevel;
+import cn.crm.enums.FoodLevel;
 import cn.crm.enums.Gender;
+import cn.crm.enums.ScenicSpotLevel;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -114,6 +117,24 @@ public class webUtils {
     }
 
     /**
+     * 转换餐饮等级到对饮的数据库单字符
+     * @param value
+     * @return
+     */
+    public static String transFoodLevel(String value) {
+        if (value == null) {
+            return null;
+        }
+        if ("".equals(value.trim())) {
+            return null;
+        }
+        FoodLevel foodLevel = Enum.valueOf(FoodLevel.class, value);
+        return foodLevel.getValue();
+    }
+
+
+
+    /**
      * 将数据库中存储的单字符转化为汉子
      * @param value
      * @return
@@ -133,4 +154,94 @@ public class webUtils {
         }
         return Gender.valueOf("其他").name();
     }
+
+    public static String  num2FoodLevel(String value) {
+        if (value == null) {
+            return null;
+        }
+        if ("".equals(value.trim())) {
+            return null;
+        }
+        if ("0".equals(value.trim())) {
+            return FoodLevel.valueOf("普通").name();
+        }
+        if ("1".equals(value.trim())) {
+            return FoodLevel.valueOf("精美").name();
+        }
+        return FoodLevel.valueOf("豪华").name();
+    }
+
+    public static String  num2AccommodationLevel(String value) {
+        if (value == null) {
+            return null;
+        }
+        if ("".equals(value.trim())) {
+            return null;
+        }
+        if ("6".equals(value.trim())) {
+            return AccommodationLevel.valueOf("白金五星").name();
+        }
+        if ("1".equals(value.trim())) {
+            return AccommodationLevel.valueOf("一星").name();
+        }
+        if ("2".equals(value.trim())) {
+            return AccommodationLevel.valueOf("二星").name();
+        }
+        if ("3".equals(value.trim())) {
+            return AccommodationLevel.valueOf("三星").name();
+        }
+        if ("4".equals(value.trim())) {
+            return AccommodationLevel.valueOf("四星").name();
+        }
+        if ("5".equals(value.trim())) {
+            return AccommodationLevel.valueOf("五星").name();
+        }
+        return AccommodationLevel.valueOf("普通").name();
+    }
+    public static String transAccommodationLevel(String value) {
+        if (value == null) {
+            return null;
+        }
+        if ("".equals(value.trim())) {
+            return null;
+        }
+        AccommodationLevel accommodationLevel = Enum.valueOf(AccommodationLevel.class, value);
+        return accommodationLevel.getValue();
+    }
+
+    public static String  num2ScenicSpotLevel(String value) {
+        if (value == null) {
+            return null;
+        }
+        if ("".equals(value.trim())) {
+            return null;
+        }
+        if ("0".equals(value.trim())) {
+            return ScenicSpotLevel.valueOf("A").name();
+        }
+        if ("1".equals(value.trim())) {
+            return ScenicSpotLevel.valueOf("AA").name();
+        }
+        if ("2".equals(value.trim())) {
+            return ScenicSpotLevel.valueOf("AAA").name();
+        }
+        if ("3".equals(value.trim())) {
+            return ScenicSpotLevel.valueOf("AAAA").name();
+        }
+        if ("4".equals(value.trim())) {
+            return ScenicSpotLevel.valueOf("AAAAA").name();
+        }
+        return ScenicSpotLevel.valueOf("普通").name();
+    }
+    public static String transScenicSpotLevel(String value) {
+        if (value == null) {
+            return null;
+        }
+        if ("".equals(value.trim())) {
+            return null;
+        }
+        ScenicSpotLevel scenicSpotLevel = Enum.valueOf(ScenicSpotLevel.class, value);
+        return scenicSpotLevel.getValue();
+    }
+
 }
