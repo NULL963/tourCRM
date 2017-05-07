@@ -145,14 +145,16 @@ CREATE TABLE suppliers (
   address VARCHAR (40),
   bank_card_number VARCHAR (25),
   bank_of_deposit VARCHAR (60),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
+  bank_of_deposit VARCHAR (60),
   email VARCHAR(20),
   phone VARCHAR(20)
+  gmt_create DATETIME ,
+  gmt_modified DATETIME ,
 );
 CREATE TABLE accomodations (
   id CHAR (32) PRIMARY KEY ,
   level CHAR (1),
+  is_usable boolean,
   price DECIMAL(8,2) ,
   address VARCHAR (40),
   rome_type VARCHAR (20),
@@ -161,15 +163,14 @@ CREATE TABLE accomodations (
   gmt_modified DATETIME ,
   CONSTRAINT accomodation_supplier_FK FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
 );
-CREATE TABLE vehicles (
+CREATE TABLE  vehicle(
   id CHAR (32) PRIMARY KEY ,
   plate_number CHAR (8),
   seat_number int,
   price DECIMAL(8,2) ,
-  enable_date DATE ,
+  enable_date DATE NOT NULL ,
   brand_model VARCHAR (20),
-  is_usable CHAR (1),
-  number VARCHAR (20),
+  is_usable boolean,
   supplier_id CHAR (32),
   gmt_create DATETIME ,
   gmt_modified DATETIME ,
@@ -178,15 +179,19 @@ CREATE TABLE vehicles (
 CREATE TABLE scenic_spots (
   id CHAR (32) PRIMARY KEY ,
   name VARCHAR (20),
+  is_usable boolean,
   level char(1),
   price DECIMAL(8,2) ,
+  address VARCHAR(80),
   gmt_create DATETIME ,
   gmt_modified DATETIME ,
   adderss VARCHAR (40)
 );
 CREATE TABLE foods (
   id CHAR (32) PRIMARY KEY ,
+  name VARCHAR (20),
   level CHAR (1),
+  is_usable boolean,
   price DECIMAL(8,2) ,
   address VARCHAR (40),
   supplier_id CHAR (32),
