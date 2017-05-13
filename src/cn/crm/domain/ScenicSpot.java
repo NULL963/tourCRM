@@ -15,6 +15,21 @@ public class ScenicSpot {
     private Date gmt_create;
     private Date gmt_modified;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ScenicSpot that = (ScenicSpot) o;
+
+        return id != null ? id.equals(that.id) : that.id == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 
     public String getId() {
         return id;

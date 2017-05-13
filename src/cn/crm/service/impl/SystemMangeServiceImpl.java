@@ -73,6 +73,12 @@ public class SystemMangeServiceImpl {
         return userDao.save(user);
     }
 
+    public User getUserById(String id) {
+        User user = userDao.getUserById(id);
+        user.setEmployee(employeeDao.getEmployeeById(user.getEmployee_id()));
+        return user;
+    }
+
     public void deleteUser(String id) {
         userDao.delete(id);
     }

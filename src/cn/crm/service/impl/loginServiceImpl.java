@@ -35,12 +35,12 @@ public class LoginServiceImpl {
         this.userDao = userDao;
     }
 
-    public boolean login(User user) {
+    public User login(User user) {
         User myUser = userDao.getUserByName(user.getName());
         if (myUser != null) {
-            return true;
+            return myUser;
         }
-        return false;
+        return null;
     }
 
     public Map<String, Object> getMenu() {

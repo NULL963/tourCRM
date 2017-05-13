@@ -2,15 +2,13 @@ package cn.crm.service.impl;
 
 import cn.crm.dao.*;
 import cn.crm.dao.impl.ScenicSpotDaoImpl;
-import cn.crm.domain.Accommodation;
-import cn.crm.domain.Food;
-import cn.crm.domain.ScenicSpot;
-import cn.crm.domain.Vehicle;
+import cn.crm.domain.*;
 import cn.crm.utils.webUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by LEMON on 2017/5/5.
@@ -27,6 +25,13 @@ public class BasicInformationServiceImpl {
     private AccommodationDao accommodationDao;
 
     private ScenicSpotDao scenicSpotDao;
+
+    private ProductDao productDao;
+
+    @Autowired
+    public void setProductDao(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 
     @Autowired
     public void setScenicSpotDao(ScenicSpotDao scenicSpotDao) {
@@ -63,6 +68,13 @@ public class BasicInformationServiceImpl {
         return list;
     }
 
+    public Food getFoodById(String id) {
+        Food food = foodDao.getById(id);
+        food.setLevel(webUtils.num2FoodLevel(food.getLevel()));
+        food.setSupplier(supplierDao.getSupplierById(food.getSupplier_id()));
+        food.setSupplier_name(food.getSupplier().getName());
+        return food;
+    }
     public void saveFood(Food food) {
         food.setId(webUtils.getUUID());
         food.setLevel(webUtils.transFoodLevel(food.getLevel()));
@@ -116,6 +128,14 @@ public class BasicInformationServiceImpl {
         return list;
     }
 
+    public Accommodation getAccommodationById(String id) {
+        Accommodation accommodation = accommodationDao.getById(id);
+        accommodation.setLevel(webUtils.num2AccommodationLevel(accommodation.getLevel()));
+        accommodation.setSupplier(supplierDao.getSupplierById(accommodation.getSupplier_id()));
+        accommodation.setSupplier_name(accommodation.getSupplier().getName());
+        return accommodation;
+    }
+
     public void saveAccommodation(Accommodation accommodation) {
         accommodation.setId(webUtils.getUUID());
         accommodation.setLevel(webUtils.transAccommodationLevel(accommodation.getLevel()));
@@ -143,6 +163,12 @@ public class BasicInformationServiceImpl {
         return list;
     }
 
+    public ScenicSpot getSpotById(String id) {
+        ScenicSpot scenicSpot = scenicSpotDao.getById(id);
+        scenicSpot.setLevel(webUtils.num2ScenicSpotLevel(scenicSpot.getLevel()));
+        return scenicSpot;
+    }
+
     public void saveScenicSpot(ScenicSpot scenicSpot) {
         scenicSpot.setLevel(webUtils.transScenicSpotLevel(scenicSpot.getLevel()));
         scenicSpot.setId(webUtils.getUUID());
@@ -156,5 +182,47 @@ public class BasicInformationServiceImpl {
     public void updateScenicSpot(ScenicSpot scenicSpot) {
         scenicSpot.setLevel(webUtils.transScenicSpotLevel(scenicSpot.getLevel()));
         scenicSpotDao.update(scenicSpot);
+    }
+
+    /**
+     * Product
+     */
+
+    public List<Product> getAllProduct() {
+        return productDao.getAll();
+    }
+
+    public Product getProductById(String id) {
+        Product product = productDao.getById(id);
+        Set<Accommodation> set = product.getAccommodationSet();
+        for (Accommodation accommodation : set) {
+            accommodation.setLevel(webUtils.num2AccommodationLevel(accommodation.getLevel()));
+            accommodation.setSupplier(supplierDao.getSupplierById(accommodation.getSupplier_id()));
+            accommodation.setSupplier_name(accommodation.getSupplier().getName());
+        }
+        Set<Food> foodSet = product.getFoodSet();
+        for (Food food : foodSet) {
+            food.setLevel(webUtils.num2FoodLevel(food.getLevel()));
+            food.setSupplier(supplierDao.getSupplierById(food.getSupplier_id()));
+            food.setSupplier_name(food.getSupplier().getName());
+        }
+        Set<ScenicSpot> scenicSpotSet = product.getSpotSet();
+        for (ScenicSpot scenicSpot : scenicSpotSet) {
+            scenicSpot.setLevel(webUtils.num2ScenicSpotLevel(scenicSpot.getLevel()));
+        }
+        return product;
+    }
+
+    public void saveProduct(Product product) {
+        product.setId(webUtils.getUUID());
+        productDao.save(product);
+    }
+
+    public void removeProduct(Product product) {
+        productDao.remove(product.getId());
+    }
+
+    public void updateProduct(Product product) {
+        productDao.update(product);
     }
 }

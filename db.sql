@@ -62,20 +62,16 @@ CREATE TABLE roles(
   gmt_modified DATETIME
 );
 CREATE TABLE mid_role_resource (
-  id CHAR (32) PRIMARY KEY ,
   role_id CHAR (32),
   resource_id CHAR (32),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
+  PRIMARY KEY (role_id,resource_id),
   CONSTRAINT mid1_role_FK FOREIGN KEY (role_id) REFERENCES roles(id),
   CONSTRAINT mid1_resource_FK FOREIGN KEY (resource_id) REFERENCES resources(id)
 );
 CREATE TABLE mid_user_role (
-  id CHAR (32) PRIMARY KEY ,
   user_id CHAR (32),
   role_id CHAR (32),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
+  PRIMARY KEY (user_id,role_id),
   CONSTRAINT mid2_user_FK FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT mid2_role_FK FOREIGN KEY (role_id) REFERENCES roles(id)
 );
@@ -120,23 +116,27 @@ CREATE TABLE orders (
   id CHAR (32) PRIMARY KEY ,
   number VARCHAR (30),
   conditions CHAR (1),
-  is_auditing CHAR (1),
-  is_cancel CHAR (1),
   is_pay CHAR (1),
+  customer_number INT ,
   money DECIMAL(8,2) ,
   mode_of_payment VARCHAR (20),
   go_off_time DATE ,
-  end_tiem DATE ,
+  end_time DATE ,
   employee_id CHAR (32),
-  customer_id CHAR (32),
   product_id CHAR (32),
   group_id CHAR (32),
   gmt_create DATETIME ,
   gmt_modified DATETIME ,
   CONSTRAINT order_employee_FK FOREIGN KEY (employee_id) REFERENCES employees(id),
-  CONSTRAINT order_customer_FK FOREIGN KEY (customer_id) REFERENCES customers(id),
   CONSTRAINT order_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT order_group_FK FOREIGN KEY (group_id) REFERENCES groups(id)
+);
+CREATE TABLE mid_order_customer (
+  order_id CHAR (32),
+  customer_id CHAR (32),
+  CONSTRAINT mid8_customer_FK FOREIGN KEY (customer_id) REFERENCES customers(id),
+  CONSTRAINT mid8_order_FK FOREIGN KEY (order_id) REFERENCES orders(id),
+  PRIMARY KEY (order_id,customer_id)
 );
 CREATE TABLE suppliers (
   id CHAR (32) PRIMARY KEY ,
@@ -201,63 +201,45 @@ CREATE TABLE foods (
 );
 
 CREATE TABLE mid_product_order (
-  id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   order_id CHAR (32),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
+  PRIMARY KEY (product_id,order_id),
   CONSTRAINT mid3_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid3_order_FK FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 
 
 
+
 CREATE TABLE mid_product_accomodation (
-  id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   accomodation_id CHAR (32),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
+  PRIMARY KEY (product_id,accomodation_id),
   CONSTRAINT mid4_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid4_accomodation_FK FOREIGN KEY (accomodation_id) REFERENCES accomodations(id)
 );
-CREATE TABLE mid_product_vehicle (
-  id CHAR (32) PRIMARY KEY ,
-  product_id CHAR (32),
+CREATE TABLE mid_group_vehicle (
+  group_id CHAR (32),
   vehicle_id CHAR (32),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
-  CONSTRAINT mid5_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
+  PRIMARY KEY (group_id,vehicle_id),
+  CONSTRAINT mid5_group_FK FOREIGN KEY (group_id) REFERENCES groups(id),
   CONSTRAINT mid5_vehicle_FK FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
 );
 CREATE TABLE mid_product_spot (
-  id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   spot_id CHAR (32),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
+  PRIMARY KEY (product_id,spot_id),
   CONSTRAINT mid6_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid6_spot_FK FOREIGN KEY (spot_id) REFERENCES scenic_spots(id)
 );
 CREATE TABLE mid_product_food (
-  id CHAR (32) PRIMARY KEY ,
   product_id CHAR (32),
   food_id CHAR (32),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
+  PRIMARY KEY (product_id,food_id),
   CONSTRAINT mid7_product_FK FOREIGN KEY (product_id) REFERENCES products(id),
   CONSTRAINT mid7_food_FK FOREIGN KEY (food_id) REFERENCES foods(id)
 );
 
-CREATE TABLE mid_user_employee (
-  id CHAR (32) PRIMARY KEY ,
-  user_id CHAR (32),
-  employee_id CHAR (32),
-  gmt_create DATETIME ,
-  gmt_modified DATETIME ,
-  CONSTRAINT mid8_user_FK FOREIGN KEY (user_id) REFERENCES users(id),
-  CONSTRAINT mid8_employee_FK FOREIGN KEY (employee_id) REFERENCES employees(id)
-);
 
 //从pub_menu 取数据
 SELECT child.id, child.text,child.uri,child.lft,child.rht, count(child.text) as depth from pub_menu as parent,pub_menu as child where parent.lft<child.lft and parent.rht>child.rht group by(child.text) order by child.lft;

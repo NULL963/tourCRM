@@ -1,9 +1,6 @@
 package cn.crm.utils;
 
-import cn.crm.enums.AccommodationLevel;
-import cn.crm.enums.FoodLevel;
-import cn.crm.enums.Gender;
-import cn.crm.enums.ScenicSpotLevel;
+import cn.crm.enums.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
@@ -242,6 +239,44 @@ public class webUtils {
         }
         ScenicSpotLevel scenicSpotLevel = Enum.valueOf(ScenicSpotLevel.class, value);
         return scenicSpotLevel.getValue();
+    }
+
+    /**
+     * condition
+     */
+    public static String  num2Condition(String value) {
+        if (value == null) {
+            return null;
+        }
+        if ("".equals(value.trim())) {
+            return null;
+        }
+        if ("0".equals(value.trim())) {
+            return Condition.valueOf("新增").name();
+        }
+        if ("1".equals(value.trim())) {
+            return Condition.valueOf("已审核").name();
+        }
+        if ("2".equals(value.trim())) {
+            return Condition.valueOf("已作废").name();
+        }
+        if ("3".equals(value.trim())) {
+            return Condition.valueOf("正在执行").name();
+        }
+        if ("4".equals(value.trim())) {
+            return Condition.valueOf("已结束").name();
+        }
+        return null;
+    }
+    public static String transCondition(String value) {
+        if (value == null) {
+            return null;
+        }
+        if ("".equals(value.trim())) {
+            return null;
+        }
+        Condition condition = Enum.valueOf(Condition.class, value);
+        return condition.getValue();
     }
 
 }

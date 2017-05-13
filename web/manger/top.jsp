@@ -48,6 +48,7 @@
             </div>
         </fn:forEach>
     </div>
+    ${username}
     <%--消息显示部分--%>
     <%--<iframe class="asr" src="${pageContext.request.contextPath}/manger/employee.jsp" frameborder="0" scrolling="no" width="100%" height="300px"></iframe>--%>
 </div>

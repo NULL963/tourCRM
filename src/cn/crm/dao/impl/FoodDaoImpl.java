@@ -57,7 +57,7 @@ public class FoodDaoImpl implements cn.crm.dao.FoodDao {
     @Override
     public Food getById(String id) {
         QueryRunner runner = new QueryRunner(jdbcUtils.getDataSoruce());
-        String sql = "select id,level,price,address,supplier_id,name,is_usable usable,gmt_create,gmt_modified from foods where id=?";
+        String sql = "select id,level,price,address,supplier_id,name,is_usable usable from foods where id=?";
         try {
             return runner.query(sql, new BeanHandler<Food>(Food.class), id);
         } catch (SQLException e) {
@@ -68,7 +68,7 @@ public class FoodDaoImpl implements cn.crm.dao.FoodDao {
     @Override
     public Food getByName(String name) {
         QueryRunner runner = new QueryRunner(jdbcUtils.getDataSoruce());
-        String sql = "select id,level,price,address,supplier_id,name,is_usable usable,gmt_create,gmt_modified from foods where name = ?";
+        String sql = "select id,level,price,address,supplier_id,name,is_usable usable from foods where name = ?";
         try {
             return runner.query(sql, new BeanHandler<Food>(Food.class), name);
         } catch (SQLException e) {
@@ -79,7 +79,7 @@ public class FoodDaoImpl implements cn.crm.dao.FoodDao {
     @Override
     public List<Food> getAll() {
         QueryRunner runner = new QueryRunner(jdbcUtils.getDataSoruce());
-        String sql = "select id,level,price,address,supplier_id,name,is_usable usable,gmt_create,gmt_modified from foods";
+        String sql = "select id,level,price,address,supplier_id,name,is_usable usable from foods";
         try {
             return runner.query(sql, new BeanListHandler<Food>(Food.class));
         } catch (SQLException e) {

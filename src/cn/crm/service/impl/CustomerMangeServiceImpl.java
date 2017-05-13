@@ -50,6 +50,10 @@ public class CustomerMangeServiceImpl {
         customerDao.update(customer);
     }
 
+    public Customer getCustomerById(String id) {
+        return customerDao.getCustomerById(id);
+    }
+
     public List<Supplier> getAllSupplier() {
         return supplierDao.getAll();
     }

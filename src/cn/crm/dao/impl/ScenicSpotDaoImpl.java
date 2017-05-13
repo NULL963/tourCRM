@@ -35,7 +35,7 @@ public class ScenicSpotDaoImpl implements cn.crm.dao.ScenicSpotDao {
         String sql = "delete from scenic_spots where id = ?";
         try {
             runner.update(sql, id);
-        } catch (SQLException e) {
+        } catch (SQLException e){
             throw new RuntimeException(e);
         }
     }
@@ -55,7 +55,7 @@ public class ScenicSpotDaoImpl implements cn.crm.dao.ScenicSpotDao {
     @Override
     public ScenicSpot getById(String id) {
         QueryRunner runner = new QueryRunner(jdbcUtils.getDataSoruce());
-        String sql = "select id,name,level,price,address,is_usable from scenic_spots where id = ?";
+        String sql = "select id,name,level,price,is_usable usable,address from scenic_spots where id = ?";
         try {
             return runner.query(sql, new BeanHandler<ScenicSpot>(ScenicSpot.class), id);
         } catch (SQLException e) {

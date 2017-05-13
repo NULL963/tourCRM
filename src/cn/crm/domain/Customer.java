@@ -21,6 +21,22 @@ public class Customer {
     private Date gmt_create;
     private Date gmt_modified;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Customer customer = (Customer) o;
+
+        return id != null ? id.equals(customer.id) : customer.id == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
     public String getBank_card_number() {
         return bank_card_number;
     }

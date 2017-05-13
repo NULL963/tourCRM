@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -316,6 +317,210 @@ public class BasicInformationHandler {
         ModelAndView modelAndView = new ModelAndView();
         service.updateScenicSpot(scenicSpot);
         modelAndView.setViewName("/manger/scenicSpot/scenicSpot.jsp");
+        return modelAndView;
+    }
+
+    /**
+     * Product
+     */
+    @RequestMapping(value = "/products.action", method = {RequestMethod.GET})
+    public ModelAndView products() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/manger/product/product.jsp");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/product.action", method = {RequestMethod.GET})
+    public @ResponseBody Map productGet() {
+        List<Product> list = service.getAllProduct();
+        Map map = new HashMap();
+        map.put("total", list.size());
+        map.put("rows", list);
+        return map;
+    }
+
+    @RequestMapping(value = "/productDetail.action", method = {RequestMethod.POST})
+    public @ResponseBody List productDetail(@RequestBody Product product) {
+        product = service.getProductById(product.getId());
+        List list = new ArrayList();
+        Set<Accommodation> set = product.getAccommodationSet();
+        for (Accommodation accommodation : set) {
+            Map map = new HashMap();
+            map.put("text", accommodation.getSupplier_name());
+            map.put("group", "×¡ËÞ");
+            list.add(map);
+        }
+        for (ScenicSpot scenicSpot : product.getSpotSet()) {
+            Map map = new HashMap();
+            map.put("text", scenicSpot.getName());
+            map.put("group", "¾°µã");
+            list.add(map);
+        }
+        for (Food food : product.getFoodSet()) {
+            Map map = new HashMap();
+            map.put("text", food.getName());
+            map.put("group", "²ÍÒû");
+            list.add(map);
+        }
+        return list;
+    }
+
+    @RequestMapping(value = "/productAppend.action", method = {RequestMethod.GET})
+    public ModelAndView productAppend() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/manger/product/productAppend.jsp");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/getAccommodation.action", method = {RequestMethod.GET})
+    public @ResponseBody List getAllAccomodation() {
+        List<Map<String, String>> list = new ArrayList();
+        List<Accommodation> accommodationList = service.getAllAccommodation();
+        for (Accommodation accommodation : accommodationList) {
+            Map map = new HashMap();
+            map.put("id", accommodation.getId());
+            map.put("text", accommodation.getSupplier_name());
+            list.add(map);
+        }
+        return list;
+    }
+
+    @RequestMapping(value = "/getFood.action", method = {RequestMethod.GET})
+    public @ResponseBody List getAllFood() {
+        List<Map<String, String>> list = new ArrayList();
+        List<Food> foodList = service.getAllFood();
+        for (Food food : foodList) {
+            Map map = new HashMap();
+            map.put("id", food.getId());
+            map.put("text", food.getName());
+            list.add(map);
+        }
+        return list;
+    }
+
+    @RequestMapping(value = "/getSpot.action", method = {RequestMethod.GET})
+    public @ResponseBody List getAllSpot() {
+        List<Map<String, String>> list = new ArrayList();
+        List<ScenicSpot> scenicSpotList = service.getAllScenicSpot();
+        for (ScenicSpot scenicSpot : scenicSpotList) {
+            Map map = new HashMap();
+            map.put("id", scenicSpot.getId());
+            map.put("text", scenicSpot.getName());
+            list.add(map);
+        }
+        return list;
+    }
+
+    @RequestMapping(value = "/productAppend.action", method = {RequestMethod.POST})
+    public ModelAndView productAppend(Product product, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        String [] foodId = request.getParameterValues("foodSet.id");
+        for (int i=0; i<foodId.length; i++) {
+            product.getFoodSet().add(service.getFoodById(foodId[i]));
+        }
+        String [] spotId = request.getParameterValues("spotSet.id");
+        for (int i=0; i<spotId.length; i++) {
+            product.getSpotSet().add(service.getSpotById(spotId[i]));
+        }
+        String [] accommodationId = request.getParameterValues("accommodationSet.id");
+        for (int i=0; i<accommodationId.length; i++) {
+            product.getAccommodationSet().add(service.getAccommodationById(accommodationId[i]));
+        }
+        service.saveProduct(product);
+        modelAndView.setViewName("/manger/product/product.jsp");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/productRemove.action", method = {RequestMethod.DELETE})
+    public
+    @ResponseBody
+    Map productRemove(@RequestBody Product product) {
+        service.removeProduct(product);
+        List<Product> list = service.getAllProduct();
+        Map map = new HashMap();
+        map.put("total", list.size());
+        map.put("rows", list);
+        return map;
+    }
+
+    @RequestMapping(value = "/productUpdate.action", method = {RequestMethod.GET})
+    public ModelAndView productUpdate(Product product) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("product", product);
+        modelAndView.setViewName("/manger/product/productUpdate.jsp");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/updateProductAccommodation.action", method = {RequestMethod.GET})
+    public @ResponseBody List productUpdateAccommodation(String id) {
+        List<Map<String, String>> list = new ArrayList();
+        Product product = service.getProductById(id);
+        List<Accommodation> accommodationList = service.getAllAccommodation();
+        for (Accommodation accommodation : accommodationList) {
+            Map map = new HashMap();
+            map.put("id", accommodation.getId());
+            map.put("text", accommodation.getSupplier_name());
+            if (product.getAccommodationSet().contains(accommodation)) {
+                map.put("selected", true);
+            }
+            list.add(map);
+        }
+        return list;
+    }
+
+    @RequestMapping(value = "/updateProductFood.action", method = {RequestMethod.GET})
+    public
+    @ResponseBody
+    List updateProductFood(String id) {
+        Product product = service.getProductById(id);
+        List<Map<String, String>> list = new ArrayList();
+        List<Food> foodList = service.getAllFood();
+        for (Food food : foodList) {
+            Map map = new HashMap();
+            map.put("id", food.getId());
+            map.put("text", food.getName());
+            if (product.getFoodSet().contains(food)) {
+                map.put("selected", true);
+            }
+            list.add(map);
+        }
+        return list;
+    }
+
+    @RequestMapping(value = "/updateProductSpot.action", method = {RequestMethod.GET})
+    public @ResponseBody List updateProductSpot(String id) {
+        Product product = service.getProductById(id);
+        List<Map<String, String>> list = new ArrayList();
+        List<ScenicSpot> scenicSpotList = service.getAllScenicSpot();
+        for (ScenicSpot scenicSpot : scenicSpotList) {
+            Map map = new HashMap();
+            map.put("id", scenicSpot.getId());
+            map.put("text", scenicSpot.getName());
+            if (product.getSpotSet().contains(scenicSpot)) {
+                map.put("selected", true);
+            }
+            list.add(map);
+        }
+        return list;
+    }
+
+    @RequestMapping(value = "/productUpdate.action", method = {RequestMethod.POST})
+    public ModelAndView productUpdatePost(Product product, HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        String [] foodId = request.getParameterValues("foodSet.id");
+        for (int i=0; i<foodId.length; i++) {
+            product.getFoodSet().add(service.getFoodById(foodId[i]));
+        }
+        String [] spotId = request.getParameterValues("spotSet.id");
+        for (int i=0; i<spotId.length; i++) {
+            product.getSpotSet().add(service.getSpotById(spotId[i]));
+        }
+        String [] accommodationId = request.getParameterValues("accommodationSet.id");
+        for (int i=0; i<accommodationId.length; i++) {
+            product.getAccommodationSet().add(service.getAccommodationById(accommodationId[i]));
+        }
+        service.updateProduct(product);
+        modelAndView.setViewName("/manger/product/product.jsp");
         return modelAndView;
     }
 }

@@ -19,6 +19,22 @@ public class Vehicle {
     private Date gmt_create;
     private Date gmt_modified;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vehicle vehicle = (Vehicle) o;
+
+        return id != null ? id.equals(vehicle.id) : vehicle.id == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
     public String getSupplier_name() {
         return supplier_name;
     }

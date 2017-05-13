@@ -1,14 +1,13 @@
 <%--
   Created by IntelliJ IDEA.
   User: LEMON
-  Date: 2017/5/3
-  Time: 20:49
+  Date: 2017/5/9
+  Time: 11:21
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>客户管理</title>
     <meta charset="UTF-8">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-easyui/jquery.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-easyui/jquery.easyui.min.js" charset="UTF-8"></script>
@@ -17,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery-easyui/themes/icon.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/jquery-easyui/demo/demo.css"/>
 
+
     <script type="text/javascript">
         $(function ($) {
             $('#dg').datagrid({
@@ -24,7 +24,7 @@
                 singleSelect: true,
                 toolbar: '#tb',
                 method: 'get',
-                url: "/customer.action",
+                url: "/product.action",
                 onLoadSuccess:function(){
                     $("#dg").datagrid("hideColumn", "id"); // 设置隐藏列
                 }
@@ -34,7 +34,7 @@
             var row = $('#dg').datagrid('getSelected');
             if(row) {
 //                alert(row.id);
-                $.ajax('/customerRemove.action', {
+                $.ajax('/productRemove.action', {
                     dataType: 'json',
                     type: 'DELETE',
                     contentType: 'application/json',
@@ -44,38 +44,53 @@
                 });
             }
         }
+        function detail() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+//                alert(row.id);
+                $.ajax('/productDetail.action', {
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({id : row.id})
+                }).done(function (data) {
+                    $('#dl').datalist('load', data);
+                }).fail(function (xhr, status) {
+                    alert('失败: ' + xhr.status + ', 原因: ' + status);
+                });
+                $('#w').window('open');
+            }
+        }
         function update() {
             var row = $('#dg').datagrid('getSelected');
             if (row) {
 //                alert(row.name + row.employee);
-                self.location.href = "/customerUpdate.action?id=" + row.id + "&name=" + row.name + "&id_number=" + row.id_number + "&gender=" + row.gender + "&nation=" + row.nation + "&email=" + row.email + "&phone=" + row.phone + "&qq=" + row.qq + "&address=" + row.address + "&bank_card_number=" + row.bank_card_number + "&bank_of_deposit=" + row.bank_of_deposit + "&description=" + row.description;
+                self.location.href = "/productUpdate.action?id=" + row.id + "&name=" + row.name + "&number=" + row.number + "&money=" + row.money + "&description=" + row.description;
             }
         }
+
     </script>
 </head>
 <body>
-<table id="dg" class="easyui-datagrid" title="部门管理" style="width:auto;height:auto">
+<table id="dg" class="easyui-datagrid" title="产品管理" style="width:auto;height:auto">
     <thead>
     <tr>
         <th data-options="field:'id',width:80">ID</th>
-        <th data-options="field:'id_number',width:150,">客户号</th>
-        <th data-options="field:'name',width:80,">姓名</th>
-        <th data-options="field:'gender',width:80,">性别</th>
-        <th data-options="field:'nation',width:80,">民族</th>
-        <th data-options="field:'email',width:80,">电子邮件</th>
-        <th data-options="field:'phone',width:80,">手机号</th>
-        <th data-options="field:'qq',width:80,">qq</th>
-        <th data-options="field:'address',width:80,">地址</th>
-        <th data-options="field:'bank_card_number',width:150,">银行卡号</th>
-        <th data-options="field:'bank_of_deposit',width:150,">银行</th>
-        <th data-options="field:'description',width:150,">描述</th>
+        <th data-options="field:'name',width:80,">名称</th>
+        <th data-options="field:'number',width:80,">产品号</th>
+        <th data-options="field:'money',width:80,">价格</th>
+        <th data-options="field:'description',width:80,">描述</th>
     </tr>
     </thead>
 </table>
 <div id="tb" style="height:auto">
-    <a href="/customerAppend.action"  target="bottom" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">新增</a>
+    <a href="/productAppend.action"  target="bottom" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">新增</a>
     <a href="javascript:void(0)" target="bottom" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">删除</a>
     <a href="javascript:void(0)" target="bottom" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="update()">更新</a>
+    <a href="javascript:void(0)" target="bottom" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="detail()">明细</a>
+</div>
+<div id="w" class="easyui-window" title="资源项信息" data-options="closed:true,iconCls:'icon-save'" style="width:500px;height:300px;padding:10px;">
+    <div id="dl" class="easyui-datalist" style="width:450px;height:250px" data-options="groupField: 'group'"></div>
 </div>
 </body>
 </html>

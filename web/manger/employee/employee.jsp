@@ -39,7 +39,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({id : row.id})
                 }).done(function (data) {
-                    $('#dg').datagrid('loadData', data);
+                    $('#dg').datagrid('reload', data);
                 });
             }
         }
